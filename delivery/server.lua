@@ -65,6 +65,7 @@ AddRemoteEvent("StartStopDelivery", function(player)
                 end
                 
                 local vehicle = CreateVehicle(24, Config.delivery.NPC[nearestDelivery].spawn[1], Config.delivery.NPC[nearestDelivery].spawn[2], Config.delivery.NPC[nearestDelivery].spawn[3], Config.delivery.NPC[nearestDelivery].spawn[4])
+                SetVehicleLicensePlate(vehicle, genLicensePlate())
                 PlayerData[player].job_vehicle = vehicle
                 CreateVehicleData(player, vehicle, 24)
                 SetVehicleRespawnParams(vehicle, false)
