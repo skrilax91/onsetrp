@@ -1,5 +1,7 @@
 local _ = function(k, ...) return ImportPackage("i18n").t(GetPackageName(), k, ...) end
 
+local JERICAN_FUEL_AMOUNT = 50
+local JERICAN_TIME = 15
 local droppedObjectsPickups = {}
 
 AddRemoteEvent("ServerPersonalMenu", function(player, inVehicle, vehiclSpeed)

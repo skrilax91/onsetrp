@@ -1,12 +1,13 @@
 local _ = function(k, ...) return ImportPackage("i18n").t(GetPackageName(), k, ...) end
 local npcTable = {
-    { x = 72234, y = -1658, z = 1370, h = -90}
+    { x = -20242, y = -16094, z = 2063, h = -90 }
 }
 
 local npcTableCached = {}
 
 local drugsUnitPrice = {
-    cocaine = 35
+    cocaine = 42,
+    weed = 7
 }
 
 AddEvent("OnPackageStart", function(player)
@@ -24,6 +25,7 @@ end)
 AddRemoteEvent("drugdealer:prepareconversation", function(player)
     local wts = 0
     if PlayerData[player].inventory['cocaine'] ~= nil and PlayerData[player].inventory['cocaine'] > 0 then wts = 1 end
+    if PlayerData[player].inventory['weed'] ~= nil and PlayerData[player].inventory['weed'] > 0 then wts = 1 end
     CallRemoteEvent(player, "drugdealer:startconversation", PlayerData[player].drug_knowledge, PlayerData[player].job, wts)    
 end)
 
@@ -50,6 +52,9 @@ AddRemoteEvent("drugdealer:doneworking", function(player, npc)
         if k == "cocaine" then
             table.insert( drugs, { label= "cocaine", nb= v, price= v*drugsUnitPrice[k] } )            
         end
+        if k == "weed" then
+            table.insert( drugs, { label= "weed", nb= v, price= v*drugsUnitPrice[k] } )            
+        end
     end
     CallRemoteEvent(player, "drugdealer:selldrugs", drugs)
     
@@ -58,6 +63,9 @@ end)
 AddRemoteEvent("drugdealer:doneselling", function(player, price)
     for k,v in pairs(PlayerData[player].inventory) do
         if k == "cocaine" then
+            RemoveInventory(player, k, v)          
+        end
+        if k == "weed" then
             RemoveInventory(player, k, v)          
         end
     end
