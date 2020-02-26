@@ -14,7 +14,19 @@ Config.VehiclesColor = {
 	    red = "FF0000",
 	    blue = "0000FF",
 	    green = "00FF00",
-	    orange = "FF6600"
+	    orange = "971900",
+        vert_bambou = "001F09",
+        marron = "391c00",
+        bleu_galaxie = "010026",
+        rouge_bordeau = "1f0000",
+        rose = "ff15b5",
+        jaune = "c9be00",
+        turquoise = "00a47c",
+        blanc = "ffffff",
+        gris_clair = "787878",
+        gris_fonce = "262626",
+        gris_titanium = "0b0f14",
+        violet_fonce = "140019"
     }
 }
 

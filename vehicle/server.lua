@@ -323,7 +323,7 @@ function getVehicleName(modelid)
 end
 
 function getVehiclePrice(modelid, cardealerobject)
-    for k, v in pairs(CarDealerTable) do
+    for k, v in pairs(Config.CarDealers) do
         if v.npc == cardealerobject then
             return(v.vehicles[modelid])
         end
@@ -331,7 +331,7 @@ function getVehiclePrice(modelid, cardealerobject)
 end
 
 function getVehicleColor(color, cardealerobject)
-    for k, v in pairs(CarDealerTable) do
+    for k, v in pairs(Config.CarDealers) do
         if v.npc == cardealerobject then
             return(v.colors[color])
         end
