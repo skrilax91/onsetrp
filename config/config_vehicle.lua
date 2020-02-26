@@ -116,151 +116,176 @@ Config.Vehicles = {
     vehicle_1 = {
         itemSpace = 205,
         price = 144572,
-        fuel = "fuel_1"
+        fuel = "fuel_1",
+        fuelCapacity = 100
     },
 
     vehicle_2 = {
         itemSpace = 50,
         price = 144572,
-        fuel = "fuel_1"
+        fuel = "fuel_1",
+        fuelCapacity = 100
     },
 
     vehicle_3 = {
         itemSpace = 80,
         price = 144572,
-        fuel = "fuel_1"
+        fuel = "fuel_1",
+        fuelCapacity = 100
     },
 
     vehicle_4 = {
         itemSpace = 215,
         price = 144572,
-        fuel = "fuel_1"
+        fuel = "fuel_1",
+        fuelCapacity = 100
     },
 
     vehicle_5 = {
         itemSpace = 205,
         price = 144572,
-        fuel = "fuel_1"
+        fuel = "fuel_1",
+        fuelCapacity = 100
     },
 
     vehicle_6 = {
         itemSpace = 90,
         price = 144572,
-        fuel = "fuel_1"
+        fuel = "fuel_1",
+        fuelCapacity = 100
     },
 
     vehicle_7 = {
         itemSpace = 315,
         price = 144572,
-        fuel = "fuel_1"
+        fuel = "fuel_1",
+        fuelCapacity = 100
     },
 
     vehicle_8 = {
         itemSpace = 50,
         price = 144572,
-        fuel = "fuel_1"
+        fuel = "fuel_1",
+        fuelCapacity = 100
     },
 
     vehicle_9 = {
         itemSpace = 10,
         price = 144572,
-        fuel = "fuel_1"
+        fuel = "fuel_1",
+        fuelCapacity = 100
     },
 
     vehicle_10 = {
         itemSpace = 10,
         price = 144572,
-        fuel = "fuel_1"
+        fuel = "fuel_1",
+        fuelCapacity = 100
     },
 
     vehicle_11 = {
         itemSpace = 140,
         price = 144572,
-        fuel = "fuel_1"
+        fuel = "fuel_1",
+        fuelCapacity = 100
     },
 
     vehicle_12 = {
         itemSpace = 100,
         price = 144572,
-        fuel = "fuel_1"
+        fuel = "fuel_1",
+        fuelCapacity = 100
     },
 
     vehicle_13 = {
         itemSpace = 100,
         price = 144572,
-        fuel = "fuel_1"
+        fuel = "fuel_1",
+        fuelCapacity = 100
     },
 
     vehicle_14 = {
         itemSpace = 100,
         price = 144572,
-        fuel = "fuel_1"
+        fuel = "fuel_1",
+        fuelCapacity = 100
     },
 
     vehicle_15 = {
         itemSpace = 100,
         price = 144572,
-        fuel = "fuel_1"
+        fuel = "fuel_1",
+        fuelCapacity = 100
     },
 
     vehicle_16 = {
         itemSpace = 100,
         price = 144572,
-        fuel = "fuel_1"
+        fuel = "fuel_1",
+        fuelCapacity = 100
     },
 
     vehicle_17 = {
         itemSpace = 540,
         price = 144572,
-        fuel = "fuel_1"
+        fuel = "fuel_1",
+        fuelCapacity = 100
     },
 
     vehicle_18 = {
         itemSpace = 540,
         price = 144572,
-        fuel = "fuel_1"
+        fuel = "fuel_1",
+        fuelCapacity = 100
     },
 
     vehicle_19 = {
         itemSpace = 205,
         price = 144572,
-        fuel = "fuel_1"
+        fuel = "fuel_1",
+        fuelCapacity = 100
     },
 
     vehicle_20 = {
         itemSpace = 10,
         price = 144572,
-        fuel = "fuel_1"
+        fuel = "fuel_1",
+        fuelCapacity = 100
     },
 
     vehicle_21 = {
         itemSpace = 100,
         price = 144572,
-        fuel = "fuel_1"
+        fuel = "fuel_1",
+        fuelCapacity = 100
     },
 
     vehicle_22 = {
         itemSpace = 475,
         price = 144572,
-        fuel = "fuel_1"
+        fuel = "fuel_1",
+        fuelCapacity = 100
     },
 
     vehicle_23 = {
         itemSpace = 475,
         price = 144572,
-        fuel = "fuel_1"
+        fuel = "fuel_1",
+        fuelCapacity = 100
     },
 
     vehicle_24 = {
         itemSpace = 10,
         price = 144572,
-        fuel = "fuel_1"
+        fuel = "fuel_1",
+        fuelCapacity = 100
     },
 
     vehicle_25 = {
         itemSpace = 160,
         price = 144572,
-        fuel = "fuel_1"
+        fuel = "fuel_1",
+        fuelCapacity = 100
     }
 }
 

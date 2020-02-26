@@ -70,7 +70,7 @@ Config.Medic = {
     },
 
     vehiclespawnLocation = {
-        {x = 213325, y = 161177, z = 1305, h = -90},
+        {x = 208760, y = 154374, z = 1305, h = 90},
     },
     serviceNPC = {
         {x = 212493, y = 157096, z = 2780, h = 180},

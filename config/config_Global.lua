@@ -89,6 +89,8 @@ Config.whitelist = true
 
 Config.inventoryBaseMaxSlots = 50
 Config.backpackSlotToAdd = 35
+Config.repairKitHealth = 2500
+Config.repairKitTime = 15
 
 --+------------------------------------------+
 --|             Damage system                |
@@ -165,6 +167,9 @@ Config.usewhilegathering = false
 --+------------------------------------------+
 --|              Fuel System                 |
 --+------------------------------------------+
+
+Config.gasStation.jericanCapacity = 50
+Config.gasStation.jericanTime = 15
 
 Config.gasStation.location = {
     { 127810,   78431,  1568 },
