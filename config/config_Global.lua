@@ -1,5 +1,11 @@
-
+-- Var define DON'T TOUCH
 Config = {}
+Config.db = {}
+Config.gasStation = {}
+Config.delivery = {}
+Config.Gather = {}
+Config.clothing = {}
+--------------------------
 
 --+------------------------------------------+
 --|                  Global                  |
