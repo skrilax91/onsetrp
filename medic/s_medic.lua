@@ -433,13 +433,13 @@ end)
 function MedicUseItem(player, item)
     if item == "health_kit" then -- PERSONNAL HEALTH KIT (Dont need to be medic)
         if GetPlayerHealth(player) < Config.medkitMaxheal then
-            CallRemoteEvent(player, "loadingbar:show", _("medic_item_use", _("health_kit")), Config.ItemTimeToUse = 5)-- LOADING BAR
+            CallRemoteEvent(player, "loadingbar:show", _("medic_item_use", _("health_kit")), Config.ItemTimeToUse)-- LOADING BAR
             SetPlayerAnimation(player, "COMBINE")
             local timer = CreateTimer(function()
                 SetPlayerAnimation(player, "COMBINE")
             end, 2000)
             
-            Delay(Config.ItemTimeToUse = 5 * 1000, function()
+            Delay(Config.ItemTimeToUse * 1000, function()
                 DestroyTimer(timer)
                 SetPlayerAnimation(player, "STOP")
                 SetPlayerHealth(player, GetPlayerHealth(player) + Config.medkitHeal)
@@ -467,13 +467,13 @@ function MedicUseItem(player, item)
             return
         end
         if GetPlayerHealth(nearestPlayer) < Config.adrSyringeHeal then
-            CallRemoteEvent(player, "loadingbar:show", _("medic_item_use", _("adrenaline_syringe")), Config.ItemTimeToUse = 5)-- LOADING BAR
+            CallRemoteEvent(player, "loadingbar:show", _("medic_item_use", _("adrenaline_syringe")), Config.ItemTimeToUse)-- LOADING BAR
             SetPlayerAnimation(player, "COMBINE")
             local timer = CreateTimer(function()
                 SetPlayerAnimation(player, "COMBINE")
             end, 2000)
             
-            Delay(Config.ItemTimeToUse = 5 * 1000, function()
+            Delay(Config.ItemTimeToUse * 1000, function()
                 DestroyTimer(timer)
                 SetPlayerAnimation(player, "STOP")
                 SetPlayerHealth(nearestPlayer, Config.adrSyringeHeal)
@@ -493,13 +493,13 @@ function MedicUseItem(player, item)
             return
         end
         if IsPlayerBleeding(nearestPlayer) then
-            CallRemoteEvent(player, "loadingbar:show", _("medic_item_use", _("bandage")), Config.ItemTimeToUse = 5)-- LOADING BAR
+            CallRemoteEvent(player, "loadingbar:show", _("medic_item_use", _("bandage")), Config.ItemTimeToUse)-- LOADING BAR
             SetPlayerAnimation(player, "COMBINE")
             local timer = CreateTimer(function()
                 SetPlayerAnimation(player, "COMBINE")
             end, 2000)
             
-            Delay(Config.ItemTimeToUse = 5 * 1000, function()
+            Delay(Config.ItemTimeToUse * 1000, function()
                 DestroyTimer(timer)
                 SetPlayerAnimation(player, "STOP")
                 StopBleedingForPlayer(nearestPlayer)

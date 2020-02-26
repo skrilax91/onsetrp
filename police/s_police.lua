@@ -201,7 +201,7 @@ function SpawnPoliceCar(player)
     end
     
     -- #2 Check if the player has a job vehicle spawned then destroy it
-    if PlayerData[player].job_vehicle ~= nil and Config.AllowVehicleRespawn = false then
+    if PlayerData[player].job_vehicle ~= nil and Config.AllowVehicleRespawn == false then
         DestroyVehicle(PlayerData[player].job_vehicle)
         DestroyVehicleData(PlayerData[player].job_vehicle)
         PlayerData[player].job_vehicle = nil

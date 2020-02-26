@@ -44,7 +44,7 @@ Config.Police = {
 -- how many medic at the same time
 Config.MaxMedic = 30
 -- time before respawn
-config.waitbeforerespawn = 30*60 -- 30 minutes
+Config.waitbeforerespawn = 30*60 -- 30 minutes
 -- percentage of success revive
 Config.revivePercentSuccess = 40
 -- time needed to revive someone
@@ -67,7 +67,7 @@ Config.Medic = {
         {item = "adrenaline_syringe", qty = 5},
         {item = "bandage", qty = 5},
         {item = "health_kit", qty = 3},
-    }
+    },
 
     vehiclespawnLocation = {
         {x = 213325, y = 161177, z = 1305, h = -90},

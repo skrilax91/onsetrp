@@ -6,10 +6,10 @@ function OnPackageStart()
 		end
 
 		-- edited by wasied
-		if Config.worldTime < morning or Config.worldTime > evening then -- night
-			Config.worldTime = Config.worldTime + nightTime
+		if Config.worldTime < Config.morning or Config.worldTime > Config.evening then -- night
+			Config.worldTime = Config.worldTime + Config.nightTime
 		else -- day
-			Config.worldTime = Config.worldTime + dayTime
+			Config.worldTime = Config.worldTime + Config.dayTime
 		end
 		--
 

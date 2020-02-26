@@ -1,12 +1,13 @@
 local _ = function(k,...) return ImportPackage("i18n").t(GetPackageName(),k,...) end
 
 GasStationCached = {}
+local pickup = {}
 
 AddEvent("OnPackageStart", function()
-    for i,j in pairs(Config.gasStation.location.location) do
-        Config.gasStation.location.pickup[i] = CreatePickup(2 , Config.gasStation.location.location[i][1], Config.gasStation.location.location[i][2], Config.gasStation.location.location[i][3])
-        CreateText3D( _("refuel").."\n".._("press_e"), 18, Config.gasStation.location.location[i][1], Config.gasStation.location.location[i][2], Config.gasStation.location.location[i][3] + 120, 0, 0, 0)
-        table.insert(GasStationCached, Config.gasStation.location.pickup[i])
+    for i,j in pairs(Config.gasStation.location) do
+        pickup[i] = CreatePickup(2 , Config.gasStation.location[i][1], Config.gasStation.location[i][2], Config.gasStation.location[i][3])
+        CreateText3D( _("refuel").."\n".._("press_e"), 18, Config.gasStation.location[i][1], Config.gasStation.location[i][2], Config.gasStation.location[i][3] + 120, 0, 0, 0)
+        table.insert(GasStationCached, pickup[i])
     end
 
     CreateTimer(function()
