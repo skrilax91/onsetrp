@@ -111,10 +111,10 @@ function DoGathering(player, gather, antiglitchKey)
         local x2,y2,z2 = GetPlayerLocation(player)
         if GetDistance3D(x, y, z, x2, y2, z2) <= 2000 then
             ableToGather = true
-        end    
+        end
     end
     if ableToGather == false then return end
-
+    
     -- #4 Lock and prepare player
     CallRemoteEvent(player, "LockControlMove", true)
     
@@ -197,14 +197,14 @@ end)
 
 function DoProcessing(player, gather, process, processKey, antiglitchKey)
     
-    local x,y,z = GetPickupLocation(process.processPickup)
-    local x2,y2,z2 = GetPlayerLocation(player)
+    local x, y, z = GetPickupLocation(process.processPickup)
+    local x2, y2, z2 = GetPlayerLocation(player)
     if GetDistance3D(x, y, z, x2, y2, z2) > 150 then
         return
-    end    
-
-    local x,y,z = GetPickupLocation(process.processPickup)
-    local x2,y2,z2 = GetPlayerLocation(player)
+    end
+    
+    local x, y, z = GetPickupLocation(process.processPickup)
+    local x2, y2, z2 = GetPlayerLocation(player)
     if GetDistance3D(x, y, z, x2, y2, z2) > 2000 then return end
     
     -- #4 Check if player have items we need to process
