@@ -22,11 +22,6 @@ local _ = function(k, ...) return ImportPackage("i18n").t(GetPackageName(), k, .
 -- }
 --- PLAN B EN CAS DE FPS EN DELIRE AVEC LE MOD DE SALSI
 
-local POLICE_GARAGE = {
-    {x = 197007, y = 205898, z = 1321},
-    {x = -172667, y = -65824, z = 1130},
-}
-
 local policeNpcIds = {}
 local policeVehicleNpcIds = {}
 local policeGarageIds = {}
