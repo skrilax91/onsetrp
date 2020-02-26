@@ -65,7 +65,7 @@ end
 
 function ApplyBleeding(player, damageAmount)
     local damages = (tonumber(damageAmount) / Config.InitialDamageToBleed)
-    local bleedingTime = math.ceil(damages / Config.DmamgePerTick)-- calculate the amount of time while the player will bleed
+    local bleedingTime = math.ceil(damages / Config.DamagePerTick)-- calculate the amount of time while the player will bleed
     
     -- Reset timer if another bleed occur
     if bleedingTimers[player] ~= nil then
@@ -86,7 +86,7 @@ function ApplyBleeding(player, damageAmount)
             return
         end
         i = i + 1
-        SetPlayerHealth(player, GetPlayerHealth(player) - Config.DmamgePerTick)
+        SetPlayerHealth(player, GetPlayerHealth(player) - Config.DamagePerTick)
         CallRemoteEvent(player, "damage:bleed:tickeffect", Config.BleedEffectAmount)
         for k, v in pairs(GetStreamedPlayersForPlayer(player)) do
             if IsValidPlayer(v) then

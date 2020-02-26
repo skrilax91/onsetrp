@@ -5,6 +5,7 @@ Config.gasStation = {}
 Config.delivery = {}
 Config.Gather = {}
 Config.clothing = {}
+local _ = function(k,...) return ImportPackage("i18n").t(GetPackageName(),k,...) end
 --------------------------
 
 --+------------------------------------------+
@@ -95,7 +96,7 @@ Config.backpackSlotToAdd = 35
 
 Config.bleedingChance = 40
 Config.InitialDamageToBleed = 1.5
-Config.DmamgePerTick = 1
+Config.DamagePerTick = 1
 Config.BlledingDamageInterval = 5000
 Config.BleedEffectAmount = 70
 Config.tazerLockDuration = 10000
@@ -129,36 +130,20 @@ Config.kilometerPrice = 2
 
 -- set all bus stop 
 Config.busStop = {
-    { x= 43977, y= 134767, z= 1567, labelArret= "old_town" }, --Vieille ville
-    { x= -23335, y= -12534, z= 2081, labelArret= "desert_town" }, --Ville du desert
-    { x= -162541, y= 79023, z= 1545, labelArret= "prison" }, --Ville du desert
-    { x= -181984, y= -44583, z= 1149, labelArret= "town" }, --Village        
-    { x= -165259, y= -37945, z= 1149, labelArret= "town".." 2" }, --Village        
-    { x= 178654, y= 210121, z= 1314, labelArret= "city".." 1" }, -- Ville
-    { x= 210387, y= 194379, z= 1310, labelArret= "city".." 2" }, -- Ville
-    { x= 194706, y= 211555, z= 1310, labelArret= "city".." 3" }, -- Ville
-    { x= 196929, y= 200157, z= 1309, labelArret= "city".." 4" }, -- Ville
-    { x= 179352, y= 195067, z= 1310, labelArret= "city".." 5" }, -- Ville
-    { x= 182731, y= 198008, z= 1310, labelArret= "city".." 6" }, -- Ville        
-    { x= 157242, y= 210114, z= 1310, labelArret= "city".." 7" }, -- Ville
-    { x= 204877, y= 187104, z= 1312, labelArret= "city".." 8" }, -- Ville
+    { x= 43977, y= 134767, z= 1567, labelArret= _("old_town") }, --Vieille ville
+    { x= -23335, y= -12534, z= 2081, labelArret= _("desert_town") }, --Ville du desert
+    { x= -162541, y= 79023, z= 1545, labelArret= _("prison") }, --Ville du desert
+    { x= -181984, y= -44583, z= 1149, labelArret= _("town") }, --Village        
+    { x= -165259, y= -37945, z= 1149, labelArret= _("town").." 2" }, --Village        
+    { x= 178654, y= 210121, z= 1314, labelArret= _("city").." 1" }, -- Ville
+    { x= 210387, y= 194379, z= 1310, labelArret= _("city").." 2" }, -- Ville
+    { x= 194706, y= 211555, z= 1310, labelArret= _("city").." 3" }, -- Ville
+    { x= 196929, y= 200157, z= 1309, labelArret= _("city").." 4" }, -- Ville
+    { x= 179352, y= 195067, z= 1310, labelArret= _("city").." 5" }, -- Ville
+    { x= 182731, y= 198008, z= 1310, labelArret= _("city").." 6" }, -- Ville        
+    { x= 157242, y= 210114, z= 1310, labelArret= _("city").." 7" }, -- Ville
+    { x= 204877, y= 187104, z= 1312, labelArret= _("city").." 8" }, -- Ville
 }
-
---Config.busStop = {
---    { x= 43977, y= 134767, z= 1567, labelArret= _("old_town") }, --Vieille ville
---    { x= -23335, y= -12534, z= 2081, labelArret= _("desert_town") }, --Ville du desert
---    { x= -162541, y= 79023, z= 1545, labelArret= _("prison") }, --Ville du desert
---    { x= -181984, y= -44583, z= 1149, labelArret= _("town") }, --Village        
---    { x= -165259, y= -37945, z= 1149, labelArret= _("town").." 2" }, --Village        
---    { x= 178654, y= 210121, z= 1314, labelArret= _("city").." 1" }, -- Ville
---    { x= 210387, y= 194379, z= 1310, labelArret= _("city").." 2" }, -- Ville
---    { x= 194706, y= 211555, z= 1310, labelArret= _("city").." 3" }, -- Ville
---    { x= 196929, y= 200157, z= 1309, labelArret= _("city").." 4" }, -- Ville
---    { x= 179352, y= 195067, z= 1310, labelArret= _("city").." 5" }, -- Ville
---    { x= 182731, y= 198008, z= 1310, labelArret= _("city").." 6" }, -- Ville        
---    { x= 157242, y= 210114, z= 1310, labelArret= _("city").." 7" }, -- Ville
---    { x= 204877, y= 187104, z= 1312, labelArret= _("city").." 8" }, -- Ville
---}
 
 -- add bus stop props if not on the map
 Config.addProp = {
