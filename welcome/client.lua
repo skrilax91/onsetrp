@@ -10,7 +10,7 @@ local screenWidth, screenHeight = GetScreenSize()
 AddEvent("OnPackageStart", function()
     welcomeUI = CreateWebUI(0.0, 0.0, 0.0, 0.0, 1, 60)
     SetWebAnchors(welcomeUI, 0.0, 0.0, 1.0, 1.0)
-    LoadWebFile(welcomeUI, 'http://asset/' .. GetPackageName() .. '/welcome/index_fr.html')
+    LoadWebFile(welcomeUI, 'http://asset/' .. GetPackageName() .. '/welcome/index_'..Config.lang..'.html')
     SetWebVisibility(welcomeUI, WEB_VISIBLE)
 end)
 

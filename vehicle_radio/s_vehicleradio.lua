@@ -1,21 +1,10 @@
 sr = ImportPackage("soundstreamer")
 local _ = function(k, ...) return ImportPackage("i18n").t(GetPackageName(), k, ...) end
 
-local Radios = {
-    {label = "NCS #1", url = "https://www.internet-radio.com/servers/tools/playlistgenerator/?u=http://51.15.152.81:8947/listen.pls?sid=1&t=.pls"},
-    {label = "NCS #2", url = "https://www.internet-radio.com/servers/tools/playlistgenerator/?u=http://91.121.113.129:9115/listen.pls?sid=1&t=.pls"},
-    {label = "Metal", url = "https://www.internet-radio.com/servers/tools/playlistgenerator/?u=http://5.135.154.69:11590/listen.pls?sid=1&t=.pls"},
-    {label = "Reggae", url = "https://www.internet-radio.com/servers/tools/playlistgenerator/?u=http://us5.internet-radio.com:8487/listen.pls&t=.pls"},
-    {label = "Dance", url = "https://www.internet-radio.com/servers/tools/playlistgenerator/?u=http://pulseedm.cdnstream1.com:8124/1373_128.m3u&t=.pls"},
-    {label = "Jazz", url = "https://www.internet-radio.com/servers/tools/playlistgenerator/?u=http://199.180.72.2:8015/listen.pls?sid=1&t=.pls"},
-    {label = "Rap", url = "https://www.internet-radio.com/servers/tools/playlistgenerator/?u=http://192.211.51.158:8010/listen.pls?sid=1&t=.pls"},
-}
-
 local nowPlaying = {}
 local TIMER_REFRESH_RADIO_POSITION = 25
 local HOOD_BONUS = 300
 local RADIO_RADIUS = 800
-local BASE_VOLUME = 0.2
 
 AddEvent("OnPackageStart", function()
     CreateTimer(function()        
@@ -49,14 +38,14 @@ function VehicleRadioToggle(player)
         else
             nowPlaying[veh] = {}
             nowPlaying[veh].channel = 1
-            local sound = sr.CreateSound3D(Radios[1].url, x, y, z + HOOD_BONUS, RADIO_RADIUS, BASE_VOLUME)
+            local sound = sr.CreateSound3D(Config.radioList[1].url, x, y, z + HOOD_BONUS, RADIO_RADIUS, Config.radioBaseVolume)
             nowPlaying[veh].sound = sound
-            nowPlaying[veh].volume = BASE_VOLUME            
+            nowPlaying[veh].volume = Config.radioBaseVolume            
             for k=1, GetVehicleNumberOfSeats(veh) do                
                 local target = GetVehiclePassenger(veh, k)
                 if IsValidPlayer(target) then 
                     CallRemoteEvent(target, "vehicle:radio:toggleui", true) 
-                    CallRemoteEvent(target, "vehicle:radio:updateui", Radios[nowPlaying[veh].channel].label, nowPlaying[veh].volume)  
+                    CallRemoteEvent(target, "vehicle:radio:updateui", Config.radioList[nowPlaying[veh].channel].label, nowPlaying[veh].volume)  
                 end
             end                  
         end
@@ -78,7 +67,7 @@ function VehicleRadioUpdateVolume(player, increaseOrLower)
         sr.SetSound3DVolume(nowPlaying[veh].sound, nowPlaying[veh].volume)
         for k=1, GetVehicleNumberOfSeats(veh) do
             local target = GetVehiclePassenger(veh, k)
-            if IsValidPlayer(target) then CallRemoteEvent(target, "vehicle:radio:updateui", Radios[nowPlaying[veh].channel].label, nowPlaying[veh].volume) end
+            if IsValidPlayer(target) then CallRemoteEvent(target, "vehicle:radio:updateui", Config.radioList[nowPlaying[veh].channel].label, nowPlaying[veh].volume) end
         end    
     end
 end
@@ -90,12 +79,12 @@ function VehicleRadioUpdateChannel(player, channelId)
         if GetPlayerVehicleSeat(player) ~= 1 and GetPlayerVehicleSeat(player) ~= 2 then return end
         local x, y, z = GetVehicleLocation(veh)
         sr.DestroySound3D(nowPlaying[veh].sound)
-        local sound = sr.CreateSound3D(Radios[channelId].url, x, y, z + HOOD_BONUS, RADIO_RADIUS, nowPlaying[veh].volume)        
+        local sound = sr.CreateSound3D(Config.radioList[channelId].url, x, y, z + HOOD_BONUS, RADIO_RADIUS, nowPlaying[veh].volume)        
         nowPlaying[veh].sound = sound
         nowPlaying[veh].channel = channelId   
         for k=1, GetVehicleNumberOfSeats(veh) do
             local target = GetVehiclePassenger(veh, k)
-            if IsValidPlayer(target) then CallRemoteEvent(target, "vehicle:radio:updateui", Radios[nowPlaying[veh].channel].label, nowPlaying[veh].volume) end
+            if IsValidPlayer(target) then CallRemoteEvent(target, "vehicle:radio:updateui", Config.radioList[nowPlaying[veh].channel].label, nowPlaying[veh].volume) end
         end
     end
 end

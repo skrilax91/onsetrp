@@ -2,6 +2,9 @@
     "author": "Frédéric C. - Frederic2ec",
     "version": "1.0",
     "server_scripts": [
+        "config/config_Global.lua",
+        "config/config_Jobs.lua",
+        "config/config_vehicle.lua",
         "misc/s_database.lua",
         "accounts/server.lua",
         "chat/server.lua",

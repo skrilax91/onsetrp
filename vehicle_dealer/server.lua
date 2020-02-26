@@ -2,53 +2,8 @@ local _ = function(k,...) return ImportPackage("i18n").t(GetPackageName(),k,...)
 
 CarDealerObjectsCached = { }
 
-CarDefaultColors = {
-	black = "0000",
-	red = "FF0000",
-	blue = "0000FF",
-	green = "00FF00",
-	orange = "FF6600"
-}
-
-CarDefaultVehicles = {
-	vehicle_25 = 2000,
-	vehicle_1 = 6000,
-	vehicle_19 = 6000,
-	vehicle_5 = 9000,
-	vehicle_4 = 12000,
-	vehicle_7 = 30000,
-	vehicle_11 = 40000,
-	vehicle_12 = 50000,
-	vehicle_22 = 45000,
-	vehicle_23 = 45000,
-	vehicle_17 = 60000,
-	vehicle_18 = 60000,
-	vehicle_6 = 70000,
-}
-
-CarDealerTable = {
-    {
-		vehicles = CarDefaultVehicles,
-		colors = CarDefaultColors,
-		location = { 162911, 191166, 1380, 180 },
-		spawn = { 162518, 189841, 1347, -90 }
-    },
-    {
-		vehicles = CarDefaultVehicles,
-		colors = CarDefaultColors,
-		location = { -188591, -50391, 1150, 180 },
-		spawn = { -188315, -51413, 1150, 180 }
-	},
-    {
-		vehicles = CarDefaultVehicles,
-		colors = CarDefaultColors,
-		location = { -24737, -18052, 2087, -150 },
-		spawn = { -25060, -18800, 2062, -150 }
-	}
-}
-
 AddEvent("OnPackageStart", function()
-	for k,v in pairs(CarDealerTable) do
+	for k,v in pairs(Config.CarDealers) do
 		v.npc = CreateNPC(v.location[1], v.location[2], v.location[3], v.location[4])
 		CreateText3D(_("car_dealer").."\n".._("press_e"), 18, v.location[1], v.location[2], v.location[3] + 120, 0, 0, 0)
 
@@ -70,7 +25,7 @@ AddRemoteEvent("carDealerInteract", function(player, cardealerobject)
 			local dist = GetDistance3D(x, y, z, x2, y2, z2)
 	
 			if dist < 250 then
-				for k,v in pairs(CarDealerTable) do
+				for k,v in pairs(Config.CarDealers) do
 					if cardealerobject == v.npc then
 						CallRemoteEvent(player, "openCarDealer", v.vehicles, v.colors)
 					end
@@ -84,7 +39,7 @@ AddRemoteEvent("carDealerInteract", function(player, cardealerobject)
 end)
 
 function GetCarDealearByObject(cardealerobject)
-	for k,v in pairs(CarDealerTable) do
+	for k,v in pairs(Config.CarDealers) do
 		if v.npc == cardealerobject then
 			return v
 		end
@@ -118,7 +73,7 @@ function buyCarServer(player, modelid, color, cardealerobject)
     else
         local x, y, z = GetPlayerLocation(player)
 
-        for k,v in pairs(CarDealerTable) do
+        for k,v in pairs(Config.CarDealers) do
             local x2, y2, z2 = GetNPCLocation(v.npc)
             local dist = GetDistance3D(x, y, z, x2, y2, z2)
             if dist < 150.0 then

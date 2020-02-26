@@ -225,7 +225,7 @@ AddRemoteEvent("OpenTrunk", function(player, vehicle)
         id = vehicleId, 
         name = vehicleName,
         inventory = VehicleData[vehicle].inventory,
-        maxSlots = VehicleTrunkSlots["vehicle_"..VehicleData[vehicle].modelid]
+        maxSlots = Config.Vehicles["vehicle_"..VehicleData[vehicle].modelid].itemSpace
     }
     
     table.insert(playersList, { id = vehicleId, name = vehicleName })
@@ -343,7 +343,7 @@ function getVehicleId(modelid)
 end
 
 function AddVehicleInventory(vehicle, item, amount, player)
-    if item == "cash" or (VehicleTrunkSlots["vehicle_"..VehicleData[vehicle].modelid] - GetVehicleUsedSlots(vehicle)) >= (amount * ItemsWeight[item]) then
+    if item == "cash" or (Config.Vehicles["vehicle_"..VehicleData[vehicle].modelid].itemSpace - GetVehicleUsedSlots(vehicle)) >= (amount * ItemsWeight[item]) then
         if VehicleData[vehicle].inventory[item] == nil then
             VehicleData[vehicle].inventory[item] = amount
         else

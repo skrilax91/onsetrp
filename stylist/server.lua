@@ -8,8 +8,6 @@ StylistNPCTable = { }
 -- 	}
 -- }
 
-local PLAYER_SPAWN_POINT = { x = 204094, y = 180846, z = 1500 }
-
 -- Event ----------------------------------------------------
 
 AddEvent("OnPackageStart", function()
@@ -103,7 +101,7 @@ AddRemoteEvent("ModifyEvent", function(player, hairsChoice, shirtsChoice, pantsC
     end
 
 	UpdateClothes(player)
-	SetPlayerLocation(player, PLAYER_SPAWN_POINT.x, PLAYER_SPAWN_POINT.y, PLAYER_SPAWN_POINT.z)
+	SetPlayerLocation(player, Config.playerSpawnLocation.x, Config.playerSpawnLocation.y, Config.playerSpawnLocation.z)
 	SetPlayerName(player,PlayerData[player].accountid)
 	SavePlayerAccount(player)
 end)

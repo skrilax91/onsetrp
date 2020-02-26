@@ -1,9 +1,6 @@
 local _ = function(k,...) return ImportPackage("i18n").t(GetPackageName(),k,...) end
-
-local whitelist = true
-
 AddEvent("OnPlayerSteamAuth", function(player)
-    if whitelist then
+    if Config.whitelist then
         local steamid = GetPlayerSteamId(player)
         
         local query = mariadb_prepare(sql, "SELECT * FROM whitelist WHERE steamid = ?;",
@@ -18,7 +15,7 @@ AddEvent("OnPlayerSteamAuth", function(player)
 end)
 
 AddEvent("OnPackageStart", function()
-    if whitelist == true then
+    if Config.whitelist == true then
         print('→ Whitelist initialized')
     end
 end)

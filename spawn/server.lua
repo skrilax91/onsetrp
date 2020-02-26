@@ -28,7 +28,7 @@ AddRemoteEvent("ServerSpawnMenu", function(player)
 	    end
 	end
 
-	CallRemoteEvent(player, "OpenSpawnMenu", spawnLocation, hasHouse)
+	CallRemoteEvent(player, "OpenSpawnMenu", Config.spawnLocation, hasHouse)
     end
 end)
 
@@ -51,7 +51,7 @@ AddRemoteEvent("PlayerSpawn", function(player, spawn)
 end)
 
 function GetSpawnLocation(spawn)
-    for k,v in pairs(spawnLocation) do
+    for k,v in pairs(Config.spawnLocation) do
         if k == spawn then
             return v
         end

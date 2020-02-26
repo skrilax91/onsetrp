@@ -60,6 +60,8 @@ Config.whitelist = true
 --|                 Radios                   |
 --+------------------------------------------+
 
+-- Base volume for radio
+Config.radioBaseVolume = 0.2
 -- set all radios available on the server
 Config.radioList = {
     {label = "NCS #1", url = "https://www.internet-radio.com/servers/tools/playlistgenerator/?u=http://51.15.152.81:8947/listen.pls?sid=1&t=.pls"},

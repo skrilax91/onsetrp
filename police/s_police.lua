@@ -1,9 +1,5 @@
 local _ = function(k, ...) return ImportPackage("i18n").t(GetPackageName(), k, ...) end
 
-local MAX_POLICE = 30 -- Number of policemens at the same time
-local ALLOW_RESPAWN_VEHICLE = false -- Allow the respawn of the vehicle by destroying the previously spawned one. (Can break RP if the car is stolen or need repairs or fuel)
-local NB_HANDCUFFS = 3
-
 --- PLAN B EN CAS DE FPS EN DELIRE AVEC LE MOD DE SALSI
 -- local VEHICLE_SPAWN_LOCATION = {
 --     {x = 189301, y = 206802, z = 1320, h = 220},
@@ -26,29 +22,9 @@ local NB_HANDCUFFS = 3
 -- }
 --- PLAN B EN CAS DE FPS EN DELIRE AVEC LE MOD DE SALSI
 
-local VEHICLE_SPAWN_LOCATION = {
-    {x = 189301, y = 206802, z = 1320, h = 220},
-    {x = -173007, y = -65864, z = 1130, h = -90},
-}
-
-local POLICE_SERVICE_NPC = {
-    {x = 191680, y = 208448, z = 2427, h = 0},
-    {x = -173771, y = -64070, z = 1209, h = 90},
-}
-
-local POLICE_VEHICLE_NPC = {
-    {x = 189593, y = 206346, z = 1323, h = 180},
-    {x = -172714, y = -65156, z = 1149, h = -90},
-}
-
 local POLICE_GARAGE = {
     {x = 197007, y = 205898, z = 1321},
     {x = -172667, y = -65824, z = 1130},
-}
-
-local POLICE_EQUIPMENT_NPC = {
-    {x = 192373, y = 208150, z = 2420, h = 180},
-    {x = -173980, y = -63613, z = 1209, h = -90},
 }
 
 local policeNpcIds = {}
@@ -57,24 +33,24 @@ local policeGarageIds = {}
 local policeEquipmentNpcIds = {}
 
 AddEvent("OnPackageStart", function()
-    for k, v in pairs(POLICE_SERVICE_NPC) do
+    for k, v in pairs(Config.Police.serviceNPC) do
         v.npcObject = CreateNPC(v.x, v.y, v.z, v.h)
         SetNPCAnimation(v.npcObject, "WALLLEAN04", true)        
         table.insert(policeNpcIds, v.npcObject)
     end
     
-    for k, v in pairs(POLICE_GARAGE) do
+    for k, v in pairs(Config.Police.garage) do
         v.garageObject = CreatePickup(2, v.x, v.y, v.z)
         table.insert(policeGarageIds, v.garageObject)
     end
     
-    for k, v in pairs(POLICE_VEHICLE_NPC) do
+    for k, v in pairs(Config.Police.vehicleNPC) do
         v.npcObject = CreateNPC(v.x, v.y, v.z, v.h)
         SetNPCAnimation(v.npcObject, "WALLLEAN04", true)
         table.insert(policeVehicleNpcIds, v.npcObject)
     end
 
-    for k, v in pairs(POLICE_EQUIPMENT_NPC) do
+    for k, v in pairs(Config.Police.equipmentNPC) do
         v.npcObject = CreateNPC(v.x, v.y, v.z, v.h)
         table.insert(policeEquipmentNpcIds, v.npcObject)
     end
@@ -115,7 +91,7 @@ function PoliceStartService(player)-- To start the police service
     for k, v in pairs(PlayerData) do
         if v.job == "police" then policemens = policemens + 1 end
     end
-    if policemens >= MAX_POLICE then
+    if policemens >= Config.MaxPolice then
         CallRemoteEvent(player, "MakeErrorNotification", _("job_full"))
         return
     end
@@ -164,8 +140,8 @@ function GivePoliceEquipmentToPlayer(player)-- To give police equipment to polic
             SetInventory(player, "weapon_21", 1)
             SetPlayerWeapon(player, 21, 100, false, 3, true)
         end
-        if GetNumberOfItem(player, "handcuffs") < NB_HANDCUFFS then -- If the player doesnt have handcuffs we give it to him
-            SetInventory(player, "handcuffs", NB_HANDCUFFS)
+        if GetNumberOfItem(player, "handcuffs") < Config.nbHandcuffs then -- If the player doesnt have handcuffs we give it to him
+            SetInventory(player, "handcuffs", Config.nbHandcuffs)
         end
         SetPlayerArmor(player, 100)
     end
@@ -230,7 +206,7 @@ function SpawnPoliceCar(player)
     end
     
     -- #2 Check if the player has a job vehicle spawned then destroy it
-    if PlayerData[player].job_vehicle ~= nil and ALLOW_RESPAWN_VEHICLE then
+    if PlayerData[player].job_vehicle ~= nil and Config.AllowVehicleRespawn = false then
         DestroyVehicle(PlayerData[player].job_vehicle)
         DestroyVehicleData(PlayerData[player].job_vehicle)
         PlayerData[player].job_vehicle = nil
@@ -238,7 +214,7 @@ function SpawnPoliceCar(player)
     
     -- #3 Try to spawn the vehicle
     if PlayerData[player].job_vehicle == nil then
-        local spawnPoint = VEHICLE_SPAWN_LOCATION[PoliceGetClosestSpawnPoint(player)]
+        local spawnPoint = Config.Police.vehiclespawnLocation[PoliceGetClosestSpawnPoint(player)]
         if spawnPoint == nil then return end
         for k, v in pairs(GetStreamedVehiclesForPlayer(player)) do
             local x, y, z = GetVehicleLocation(v)
@@ -276,7 +252,7 @@ end
 AddEvent("OnPlayerPickupHit", function(player, pickup)-- Store the vehicle in garage
     if PlayerData[player].job ~= "police" then return end
     
-    for k, v in pairs(POLICE_GARAGE) do
+    for k, v in pairs(Config.Police.garage) do
         if v.garageObject == pickup then
             local vehicle = GetPlayerVehicle(player)
             
@@ -542,7 +518,7 @@ function PoliceGetClosestSpawnPoint(player)
     local x, y, z = GetPlayerLocation(player)
     local closestSpawnPoint
     local dist
-    for k, v in pairs(VEHICLE_SPAWN_LOCATION) do
+    for k, v in pairs(Config.Police.vehiclespawnLocation) do
         local currentDist = GetDistance3D(x, y, z, v.x, v.y, v.z)
         if (dist == nil or currentDist < dist) and currentDist <= 2000 then
             closestSpawnPoint = k

@@ -40,20 +40,20 @@ Config.VehicleGroups = {
 -- set all car Dealers
 Config.CarDealers = {
     {
-		vehicles = CarDefaultVehicles, -- group of color used
-		colors = CarDefaultColors, -- group of vehicle used
+		vehicles = Config.VehicleGroups.DefaultVehicles, -- group of color used
+		colors = Config.VehiclesColor.defaultColor, -- group of vehicle used
 		location = { 162911, 191166, 1380, 180 }, -- location of car dealer
 		spawn = { 162518, 189841, 1347, -90 } -- location of vehicle spawn
     },
     {
-		vehicles = CarDefaultVehicles, -- group of color used
-		colors = CarDefaultColors, -- group of vehicle used
+		vehicles = Config.VehicleGroups.DefaultVehicles, -- group of color used
+		colors = Config.VehiclesColor.defaultColor, -- group of vehicle used
 		location = { -188591, -50391, 1150, 180 }, -- location of car dealer
 		spawn = { -188315, -51413, 1150, 180 } -- location of vehicle spawn
 	},
     {
-		vehicles = CarDefaultVehicles, -- group of color used
-		colors = CarDefaultColors, -- group of vehicle used
+		vehicles = Config.VehicleGroups.DefaultVehicles, -- group of color used
+		colors = Config.VehiclesColor.defaultColor, -- group of vehicle used
 		location = { -24737, -18052, 2087, -150 }, -- location of car dealer
 		spawn = { -25060, -18800, 2062, -150 } -- location of vehicle spawn
 	}
