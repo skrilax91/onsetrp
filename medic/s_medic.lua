@@ -1,52 +1,5 @@
 local _ = function(k, ...) return ImportPackage("i18n").t(GetPackageName(), k, ...) end
 
-local MAX_MEDIC = 20
-local ALLOW_RESPAWN_VEHICLE = false
-local TIMER_RESPAWN_WAITER = 1800 -- 30 minutes
-local REVIVE_PERCENT_SUCCESS = 40 -- in percent
-local TIME_TO_REVIVE = 15 -- in seconds
-local AUTO_CALL_FOR_MEDIC = false
-local TIME_TO_HEAL = 5 -- in seconds
-local AMOUNT_TO_HEAL_PER_INTERACTION = 30 -- Hp that will be healed each time the medic interact
-
-local DEFAULT_RESPAWN_POINT = {x = 212124, y = 159055, z = 1305, h = 90}
-
-local VEHICLE_SPAWN_LOCATION = {
-    {x = 213325, y = 161177, z = 1305, h = -90},
-}
-
-local MEDIC_SERVICE_NPC = {
-    {x = 212493, y = 157096, z = 2780, h = 180},
-}
-
-local MEDIC_VEHICLE_NPC = {
-    {x = 212571, y = 159486, z = 1320, h = 90},
-}
-
-local MEDIC_GARAGE = {
-    {x = 215766, y = 161131, z = 1305},
-}
-
-local MEDIC_EQUIPMENT_NPC = {
-    {x = 212744, y = 157405, z = 2781, h = -90},
-}
-
-local MEDIC_HOSPITAL_LOCATION = {
-    {x = 213079, y = 155179, radius = 2000}
-}
-
-local MEDIC_EQUIPEMENT_NEEDED = {
-    {item = "defibrillator", qty = 1},
-    {item = "adrenaline_syringe", qty = 5},
-    {item = "bandage", qty = 5},
-    {item = "health_kit", qty = 3},
-}
-
-local ITEM_MEDKIT_HEAL = 10
-local ITEM_MEDKIT_MAX_HEAL = 30
-local ITEM_ADRENALINE_SYRINGE_HEAL = 50
-local ITEM_TIME_TO_USE = 5
-
 local medicNpcIds = {}
 local medicVehicleNpcIds = {}
 local medicGarageIds = {}
@@ -56,24 +9,24 @@ local medicHospitalLocationIds = {}
 
 
 AddEvent("OnPackageStart", function()
-    for k, v in pairs(MEDIC_SERVICE_NPC) do
+    for k, v in pairs(Config.Medic.serviceNPC) do
         v.npcObject = CreateNPC(v.x, v.y, v.z, v.h)
         
         table.insert(medicNpcIds, v.npcObject)
     end
     
-    for k, v in pairs(MEDIC_GARAGE) do
+    for k, v in pairs(Config.Medic.garage) do
         v.garageObject = CreatePickup(2, v.x, v.y, v.z)
         table.insert(medicGarageIds, v.garageObject)
     end
     
-    for k, v in pairs(MEDIC_VEHICLE_NPC) do
+    for k, v in pairs(Config.Medic.vehicleNPC) do
         v.npcObject = CreateNPC(v.x, v.y, v.z, v.h)
         SetNPCAnimation(v.npcObject, "WALLLEAN04", true)
         table.insert(medicVehicleNpcIds, v.npcObject)
     end
     
-    for k, v in pairs(MEDIC_EQUIPMENT_NPC) do
+    for k, v in pairs(Config.Medic.equipmentNPC) do
         v.npcObject = CreateNPC(v.x, v.y, v.z, v.h)
         SetNPCAnimation(v.npcObject, "WALLLEAN04", true)
         table.insert(medicEquipmentNpcIds, v.npcObject)
@@ -115,7 +68,7 @@ function MedicStartService(player)-- start service
     for k, v in pairs(PlayerData) do
         if v.job == "medic" then medics = medics + 1 end
     end
-    if medics >= MAX_MEDIC then
+    if medics >= Config.MaxMedic then
         CallRemoteEvent(player, "MakeErrorNotification", _("job_full"))
         return
     end
@@ -152,7 +105,7 @@ end
 
 function GiveMedicEquipmentToPlayer(player)-- To give medic equipment to medics
     if PlayerData[player].job == "medic" and PlayerData[player].medic == 1 then -- Fail check
-        for k, v in pairs(MEDIC_EQUIPEMENT_NEEDED) do
+        for k, v in pairs(Config.Medic.equipmentNeeded) do
             SetInventory(player, v.item, v.qty)
         end
     end
@@ -160,7 +113,7 @@ end
 AddRemoteEvent("medic:checkmyequipment", GiveMedicEquipmentToPlayer)
 
 function RemoveMedicEquipmentToPlayer(player)-- remove equipment from a medic
-    for k, v in pairs(MEDIC_EQUIPEMENT_NEEDED) do
+    for k, v in pairs(Config.Medic.equipmentNeeded) do
         SetInventory(player, v.item, 0)
     end
 end
@@ -209,7 +162,7 @@ function SpawnMedicCar(player)-- to spawn an ambulance
     end
     
     -- #2 Check if the player has a job vehicle spawned then destroy it
-    if PlayerData[player].job_vehicle ~= nil and ALLOW_RESPAWN_VEHICLE then
+    if PlayerData[player].job_vehicle ~= nil and Config.AllowVehicleRespawn then
         DestroyVehicle(PlayerData[player].job_vehicle)
         DestroyVehicleData(PlayerData[player].job_vehicle)
         PlayerData[player].job_vehicle = nil
@@ -217,7 +170,7 @@ function SpawnMedicCar(player)-- to spawn an ambulance
     
     -- #3 Try to spawn the vehicle
     if PlayerData[player].job_vehicle == nil then
-        local spawnPoint = VEHICLE_SPAWN_LOCATION[MedicGetClosestSpawnPoint(player)]
+        local spawnPoint = Config.Medic.vehiclespawnLocation[MedicGetClosestSpawnPoint(player)]
         if spawnPoint == nil then return end
         for k, v in pairs(GetStreamedVehiclesForPlayer(player)) do
             local x, y, z = GetVehicleLocation(v)
@@ -255,7 +208,7 @@ end
 AddEvent("OnPlayerPickupHit", function(player, pickup)-- Store the vehicle in garage
     if PlayerData[player].medic ~= 1 then return end
     if PlayerData[player].job ~= "medic" then return end
-    for k, v in pairs(MEDIC_GARAGE) do
+    for k, v in pairs(Config.Medic.garage) do
         if v.garageObject == pickup then
             local vehicle = GetPlayerVehicle(player)
             if vehicle == nil then return end
@@ -346,13 +299,13 @@ function MedicRevivePlayer(player)-- To revive a player. can fail. need defib.
     CallRemoteEvent(player, "LockControlMove", true)
     SetPlayerBusy(player)
     
-    CallRemoteEvent(player, "loadingbar:show", _("medic_revive_attempt"), TIME_TO_REVIVE)-- LOADING BAR
+    CallRemoteEvent(player, "loadingbar:show", _("medic_revive_attempt"), Config.timeToRevive)-- LOADING BAR
     SetPlayerAnimation(player, "REVIVE")
     local timer = CreateTimer(function()
         SetPlayerAnimation(player, "REVIVE")
     end, 4000)
     
-    Delay(TIME_TO_REVIVE * 1000, function()
+    Delay(Config.timeToRevive * 1000, function()
         DestroyTimer(timer)
         SetPlayerAnimation(player, "STOP")
         
@@ -362,7 +315,7 @@ function MedicRevivePlayer(player)-- To revive a player. can fail. need defib.
         
         math.randomseed(os.time())
         local lucky = math.random(100)
-        if lucky > REVIVE_PERCENT_SUCCESS then -- Success !
+        if lucky > Config.revivePercentSuccess then -- Success !
             local x, y, z = GetPlayerLocation(nearestPlayer)
             local h = GetPlayerHeading(nearestPlayer)
             SetPlayerSpawnLocation(nearestPlayer, x, y, z, h)
@@ -408,13 +361,13 @@ function MedicTruelyHealPlayer(player)-- To really heal a player. This need to b
     -- Lock player while he's healing
     SetPlayerBusy(player)
     
-    CallRemoteEvent(player, "loadingbar:show", _("medic_healing_in_progress"), TIME_TO_HEAL)-- LOADING BAR
+    CallRemoteEvent(player, "loadingbar:show", _("medic_healing_in_progress"), Config.timeToHeal)-- LOADING BAR
     SetPlayerAnimation(player, "HANDSHAKE")
     local timer = CreateTimer(function()
         SetPlayerAnimation(player, "HANDSHAKE")
     end, 4000)
     
-    Delay(TIME_TO_HEAL * 1000, function()
+    Delay(Config.timeToHeal * 1000, function()
         DestroyTimer(timer)
         SetPlayerAnimation(player, "STOP")
         
@@ -436,13 +389,13 @@ AddRemoteEvent("medic:interact:heal", MedicTruelyHealPlayer)
 --------- INTERACTIONS END
 --------- HEALTH BEHAVIOR
 AddEvent("OnPlayerDeath", function(player, instigator)-- do some stuff when player die
-    SetPlayerSpawnLocation(player, DEFAULT_RESPAWN_POINT.x, DEFAULT_RESPAWN_POINT.y, DEFAULT_RESPAWN_POINT.z, DEFAULT_RESPAWN_POINT.h)-- HOSPITAL
+    SetPlayerSpawnLocation(player, Config.Medic.defaultRespawnPoint.x, Config.Medic.defaultRespawnPoint.y, Config.Medic.defaultRespawnPoint.z, Config.Medic.defaultRespawnPoint.h)-- HOSPITAL
     
-    SetPlayerRespawnTime(player, TIMER_RESPAWN_WAITER * 1000)
+    SetPlayerRespawnTime(player, config.waitbeforerespawn * 1000)
     CallRemoteEvent(player, "medic:revivescreen:toggle", true)
     
     if GetMedicsOnDuty(player) > 0 then
-        if AUTO_CALL_FOR_MEDIC == true then CreateMedicCallout(player) end
+        if Config.autoCall == true then CreateMedicCallout(player) end
         
          CallRemoteEvent(player, "medic:revivescreen:btncallmedic:toggle", 1)
     else
@@ -479,18 +432,18 @@ end)
 --------- ITEMS USES
 function MedicUseItem(player, item)
     if item == "health_kit" then -- PERSONNAL HEALTH KIT (Dont need to be medic)
-        if GetPlayerHealth(player) < ITEM_MEDKIT_MAX_HEAL then
-            CallRemoteEvent(player, "loadingbar:show", _("medic_item_use", _("health_kit")), ITEM_TIME_TO_USE)-- LOADING BAR
+        if GetPlayerHealth(player) < Config.medkitMaxheal then
+            CallRemoteEvent(player, "loadingbar:show", _("medic_item_use", _("health_kit")), Config.ItemTimeToUse = 5)-- LOADING BAR
             SetPlayerAnimation(player, "COMBINE")
             local timer = CreateTimer(function()
                 SetPlayerAnimation(player, "COMBINE")
             end, 2000)
             
-            Delay(ITEM_TIME_TO_USE * 1000, function()
+            Delay(Config.ItemTimeToUse = 5 * 1000, function()
                 DestroyTimer(timer)
                 SetPlayerAnimation(player, "STOP")
-                SetPlayerHealth(player, GetPlayerHealth(player) + ITEM_MEDKIT_HEAL)
-                if GetPlayerHealth(player) > ITEM_MEDKIT_MAX_HEAL then SetPlayerHealth(player, ITEM_MEDKIT_MAX_HEAL) end
+                SetPlayerHealth(player, GetPlayerHealth(player) + Config.medkitHeal)
+                if GetPlayerHealth(player) > Config.medkitMaxheal then SetPlayerHealth(player, Config.medkitMaxheal) end
                 PlayerData[player].health = GetPlayerHealth(player)
                 if PlayerData[player].job == "medic" then
                     SetPlayerHealth(player, 60)
@@ -513,17 +466,17 @@ function MedicUseItem(player, item)
             CallRemoteEvent(player, "MakeErrorNotification", _("medic_nobody_nearby"))
             return
         end
-        if GetPlayerHealth(nearestPlayer) < ITEM_ADRENALINE_SYRINGE_HEAL then
-            CallRemoteEvent(player, "loadingbar:show", _("medic_item_use", _("adrenaline_syringe")), ITEM_TIME_TO_USE)-- LOADING BAR
+        if GetPlayerHealth(nearestPlayer) < Config.adrSyringeHeal then
+            CallRemoteEvent(player, "loadingbar:show", _("medic_item_use", _("adrenaline_syringe")), Config.ItemTimeToUse = 5)-- LOADING BAR
             SetPlayerAnimation(player, "COMBINE")
             local timer = CreateTimer(function()
                 SetPlayerAnimation(player, "COMBINE")
             end, 2000)
             
-            Delay(ITEM_TIME_TO_USE * 1000, function()
+            Delay(Config.ItemTimeToUse = 5 * 1000, function()
                 DestroyTimer(timer)
                 SetPlayerAnimation(player, "STOP")
-                SetPlayerHealth(nearestPlayer, ITEM_ADRENALINE_SYRINGE_HEAL)
+                SetPlayerHealth(nearestPlayer, Config.adrSyringeHeal)
                 PlayerData[player].health = GetPlayerHealth(nearestPlayer)
                 RemoveInventory(player, item, 1)
                 CallRemoteEvent(player, "MakeNotification", _("medic_item_adrenaline_syringue_success"), "linear-gradient(to right, #00b09b, #96c93d)")
@@ -540,13 +493,13 @@ function MedicUseItem(player, item)
             return
         end
         if IsPlayerBleeding(nearestPlayer) then
-            CallRemoteEvent(player, "loadingbar:show", _("medic_item_use", _("bandage")), ITEM_TIME_TO_USE)-- LOADING BAR
+            CallRemoteEvent(player, "loadingbar:show", _("medic_item_use", _("bandage")), Config.ItemTimeToUse = 5)-- LOADING BAR
             SetPlayerAnimation(player, "COMBINE")
             local timer = CreateTimer(function()
                 SetPlayerAnimation(player, "COMBINE")
             end, 2000)
             
-            Delay(ITEM_TIME_TO_USE * 1000, function()
+            Delay(Config.ItemTimeToUse = 5 * 1000, function()
                 DestroyTimer(timer)
                 SetPlayerAnimation(player, "STOP")
                 StopBleedingForPlayer(nearestPlayer)
@@ -568,7 +521,7 @@ function MedicGetClosestSpawnPoint(player)-- get closeest spawn point for vehicl
     local x, y, z = GetPlayerLocation(player)
     local closestSpawnPoint
     local dist
-    for k, v in pairs(VEHICLE_SPAWN_LOCATION) do
+    for k, v in pairs(Config.Medic.vehiclespawnLocation) do
         local currentDist = GetDistance3D(x, y, z, v.x, v.y, v.z)
         if (dist == nil or currentDist < dist) and currentDist <= 2000 then
             closestSpawnPoint = k
@@ -590,7 +543,7 @@ end
 
 function IsHospitalInRange(player)-- to nknow if player and targets are in range from hospital
     local x, y, z = GetPlayerLocation(player)
-    for k, v in pairs(MEDIC_HOSPITAL_LOCATION) do
+    for k, v in pairs(Config.Medic.hospitalLocation) do
         if GetDistance2D(x, y, v.x, v.y) <= v.radius then
             return true
         end

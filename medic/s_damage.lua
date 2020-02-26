@@ -1,13 +1,5 @@
 local _ = function(k, ...) return ImportPackage("i18n").t(GetPackageName(), k, ...) end
 
-local BLEEDING_CHANCE = 40 -- Chance for the player to bleed on damage
-local INITIAL_DAMAGE_TO_BLEED = 1.5 -- how much the damages have to be divided by
-local DAMAGE_PER_TICK = 1 -- the damages the player will take on each tick
-local BLEEDING_DAMAGE_INTERVAL = 5000 -- The interval to apply damages
-local BLEED_EFFECT_AMOUNT = 70 -- the amount of bleed effect (red flash)
-local TASER_LOCK_DURATION = 10000
-local TASER_EFFECT_DURATION = 20000
-
 local BODY_Z = 50
 local HEAD_Z = 150
 local HEAD_Z_CROUCHING = 130
@@ -51,7 +43,7 @@ AddEvent("OnPlayerDamage", function(player, damagetype, amount)
     if GetPlayerHealth(player) > 0 and damagetype == 1 and amount > 10 then
         math.randomseed(os.time())
         local lucky = math.random(100)
-        if lucky <= BLEEDING_CHANCE then
+        if lucky <= Config.bleedingChance then
             ApplyBleeding(player, amount)
         end
     end
@@ -60,8 +52,8 @@ end)
 function ApplyTaserEffect(player)
     SetPlayerRagdoll(player, true)-- Makes player ragdoll
     CallRemoteEvent(player, "LockControlMove", true)
-    CallRemoteEvent(player, "damage:taser:starteffect", TASER_EFFECT_DURATION)
-    Delay(TASER_LOCK_DURATION, function()-- Waits 6 seconds before the player can stand up again
+    CallRemoteEvent(player, "damage:taser:starteffect", Config.tazerLockDuration)
+    Delay(Config.tazerLockDuration, function()-- Waits 6 seconds before the player can stand up again
         SetPlayerRagdoll(player, false)-- Disables the ragdoll so he can walk again.
         SetPlayerAnimation(player, "PUSHUP_END")
         CallRemoteEvent(player, "LockControlMove", false)
@@ -72,8 +64,8 @@ function ApplyTaserEffect(player)
 end
 
 function ApplyBleeding(player, damageAmount)
-    local damages = (tonumber(damageAmount) / INITIAL_DAMAGE_TO_BLEED)
-    local bleedingTime = math.ceil(damages / DAMAGE_PER_TICK)-- calculate the amount of time while the player will bleed
+    local damages = (tonumber(damageAmount) / Config.InitialDamageToBleed)
+    local bleedingTime = math.ceil(damages / Config.DmamgePerTick)-- calculate the amount of time while the player will bleed
     
     -- Reset timer if another bleed occur
     if bleedingTimers[player] ~= nil then
@@ -94,14 +86,14 @@ function ApplyBleeding(player, damageAmount)
             return
         end
         i = i + 1
-        SetPlayerHealth(player, GetPlayerHealth(player) - DAMAGE_PER_TICK)
-        CallRemoteEvent(player, "damage:bleed:tickeffect", BLEED_EFFECT_AMOUNT)
+        SetPlayerHealth(player, GetPlayerHealth(player) - Config.DmamgePerTick)
+        CallRemoteEvent(player, "damage:bleed:tickeffect", Config.BleedEffectAmount)
         for k, v in pairs(GetStreamedPlayersForPlayer(player)) do
             if IsValidPlayer(v) then
                 CallRemoteEvent(v, "damage:bleed:dropblood", player)
             end
         end
-    end, BLEEDING_DAMAGE_INTERVAL)
+    end, Config.BlledingDamageInterval)
 end
 
 function CleanPlayerEffects(player)

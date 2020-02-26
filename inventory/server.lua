@@ -1,8 +1,5 @@
 local _ = function(k, ...) return ImportPackage("i18n").t(GetPackageName(), k, ...) end
 
-local inventory_base_max_slots = 50
-local backpack_slot_to_add = 35
-
 local droppedObjectsPickups = {}
 
 AddRemoteEvent("ServerPersonalMenu", function(player, inVehicle, vehiclSpeed)
@@ -673,9 +670,9 @@ end
 
 function GetPlayerMaxSlots(player)
     if PlayerData[player].inventory['item_backpack'] and math.tointeger(PlayerData[player].inventory['item_backpack']) > 0 then
-        return math.floor(inventory_base_max_slots + backpack_slot_to_add)
+        return math.floor(Config.inventoryBaseMaxSlots + Config.backpackSlotToAdd)
     else
-        return inventory_base_max_slots
+        return Config.inventoryBaseMaxSlots
     end
 end
 

@@ -58,7 +58,7 @@ end
 AddRemoteEvent("OpenLicenses", function(licenses)
 	local licenseItems = {}
 	for k, v in pairs(licenses) do
-		licenseItems[k] = _(k).." ["..v.._("currency").."]"
+		licenseItems[k] = v.displayName.." ["..v.price.._("currency").."]"
 	end
     
 	Dialog.setSelectLabeledOptions(licenseNpcMenu, 1, 1, licenseItems)

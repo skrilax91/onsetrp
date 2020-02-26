@@ -1,15 +1,9 @@
 local _ = function(k,...) return ImportPackage("i18n").t(GetPackageName(),k,...) end
 
--- CONFIGS
-
-local canUsePhoneWithoutPhoneItem = false
-local phoneItemName = 'phone'
-local canUsePhoneWhileGathering = false
-
 -- LOADING
 
 function LoadPhone(player)
-    if (canUsePhoneWhileGathering or not PlayerData[player].onAction) and canUsePhoneWithoutPhoneItem or PlayerData[player].inventory[phoneItemName] then
+    if (Config.usewhilegathering or not PlayerData[player].onAction) and Config.useWithoutPhone or PlayerData[player].inventory[Config.phoneItemName] then
 	if not GetPlayerPropertyValue(player, "sit") then
         	local x, y, z = GetPlayerLocation(player)
         	local Ophone = CreateObject(181, x, y, z)

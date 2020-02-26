@@ -1,17 +1,12 @@
 local _ = function(k,...) return ImportPackage("i18n").t(GetPackageName(),k,...) end
 
-Licenses = {
-    driver_license = 1500,
-    gun_license = 6000
---     helicopter_license = 30000
-}
 LicensesNpcLocation = { x = 169336, y = 193430, z = 1307, h = 180 }
 -- LicensesNpcLocation = { x = 211564, y = 175848, z = 1307, h = 180 }
 LicensesNpc = {}
 
 AddEvent("OnPackageStart", function()
-    LicensesNpc = CreateNPC(LicensesNpcLocation.x, LicensesNpcLocation.y, LicensesNpcLocation.z, LicensesNpcLocation.h)
-    CreateText3D(_("license_shop").."\n".._("press_e"), 18, LicensesNpcLocation.x, LicensesNpcLocation.y, LicensesNpcLocation.z + 120, 0, 0, 0)
+    LicensesNpc = CreateNPC(Config.LicensesNpcLocation.x, Config.LicensesNpcLocation.y, Config.LicensesNpcLocation.z, Config.LicensesNpcLocation.h)
+    CreateText3D(_("license_shop").."\n".._("press_e"), 18, Config.LicensesNpcLocation.x, Config.LicensesNpcLocation.y, Config.LicensesNpcLocation.z + 120, 0, 0, 0)
 end)
 
 AddEvent("OnPlayerJoin", function(player)
@@ -21,7 +16,7 @@ end)
 AddRemoteEvent("LicenseInteract", function(player)
     local availableLicenses = {}
 
-    for k, v in pairs(Licenses) do
+    for k, v in pairs(Config.Licenses) do
         if PlayerData[player][k] == 0 then
             availableLicenses[k] = v
         end
@@ -31,7 +26,7 @@ AddRemoteEvent("LicenseInteract", function(player)
 end)
 
 AddRemoteEvent("BuyLicense", function (player, license)
-    local price = Licenses[license]
+    local price = Config.Licenses[license].price
 
     if GetPlayerCash(player) < price then
         CallRemoteEvent(player, "MakeNotification", _("not_enought_cash"), "linear-gradient(to right, #ff5f6d, #ffc371)")

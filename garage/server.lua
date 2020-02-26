@@ -1,42 +1,6 @@
 local _ = function(k,...) return ImportPackage("i18n").t(GetPackageName(),k,...) end
 
-GarageDealerObjectsCached = { }
-GarageDealerTable = {
-    {
-		location = { 22083, 146617, 1560, -90 },
-		spawn = { 22120, 145492 , 1560, -90 }
-    },
-    {
-        location = { -184007, -50877, 1146, -90 },
-        spawn = { -183649, -51499, 1146, -90 }
-    },
-    {
-        location = { 202673, 198046, 1307, 90 },
-        spawn = { 202786, 199085, 1307, 0 }
-    },
-    {
-        location = { -25135, -17097, 2062, -150 },
-        spawn = { -25576, -17300, 2062 , -150 }
-    }
- }
-
- GarageStoreTable = {
-    {
-        modelid = 2,
-        location = {
-            { 23432, 145697, 1550 },
-            { 20752, 168878, 1306 },
-            { -184587, -51196, 1146 },
-            { -185403, -51170, 1146 },
-            { -185603, -51410, 1146 },
-			{ 203269, 201098, 1307 },
-			{ 203973, 201098, 1307 },
-            { -25189, -16824, 2077 }
-        },
-        object = {}
-    }
-}
-
+GarageDealerObjectsCached = {}
 GarageStoreObjectsCached = {}
 
 AddEvent("database:connected", function()
@@ -44,7 +8,7 @@ AddEvent("database:connected", function()
 end)
 
  AddEvent("OnPackageStart", function()
-	for k,v in pairs(GarageDealerTable) do
+	for k,v in pairs(Config.GarageDealerTable) do
         v.npc = CreateNPC(v.location[1], v.location[2], v.location[3], v.location[4])
 
 		CreateText3D(_("garage").."\n".._("press_e"), 18, v.location[1], v.location[2], v.location[3] + 120, 0, 0, 0)
@@ -52,7 +16,7 @@ end)
 		table.insert(GarageDealerObjectsCached, v.npc)
     end
 
-    for k,v in pairs(GarageStoreTable) do
+    for k,v in pairs(Config.GarageStoreTable) do
         for i,j in pairs(v.location) do
             v.object[i] = CreatePickup(v.modelid , v.location[i][1], v.location[i][2], v.location[i][3])
 
@@ -78,7 +42,7 @@ AddRemoteEvent("garageDealerInteract", function(player, garagedealerobject)
 end)
 
 function GetGarageDealearByObject(garagedealerobject)
-	for k,v in pairs(GarageDealerTable) do
+	for k,v in pairs(Config.GarageDealerTable) do
 		if v.npc == garagedealerobject then
 			return v
 		end
@@ -112,7 +76,7 @@ function OnGarageListLoaded(player)
 end
 
 function OnPlayerPickupHit(player, pickup)
-    for k,v in pairs(GarageStoreTable) do
+    for k,v in pairs(Config.GarageStoreTable) do
         for i,j in pairs(v.object) do
             if j == pickup then
                 vehicle = GetPlayerVehicle(player)
@@ -163,7 +127,7 @@ function spawnCarServerLoaded(player)
 
         local x, y, z = GetPlayerLocation(player)
 
-        for k,v in pairs(GarageDealerTable) do
+        for k,v in pairs(Config.GarageDealerTable) do
             local x2, y2, z2 = GetNPCLocation(v.npc)
             local dist = GetDistance3D(x, y, z, x2, y2, z2)
             if dist < 150.0 then

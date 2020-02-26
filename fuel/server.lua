@@ -1,53 +1,12 @@
 local _ = function(k,...) return ImportPackage("i18n").t(GetPackageName(),k,...) end
 
-local gas_station = {
-    location = {
-        { 127810,   78431,  1568 },
-        { 127446,   78415,  1568 },
-        { 127048,   78430,  1568 },
-        { 126678,   78404,  1568 },
-        { 126246,   78420,  1568 },
-        { 125904,   78406,  1568 },
-        { -17171,   -2172,  2062 },
-        { -16814,   -3187,  2062 },
-        { -17155,   -3305,  2062 },
-        { -17526,   -2315,  2062 },
-        { -17804,   -2415,  2062 },
-        { -17447,   -3387,  2062 },
-        { -17753,   -3526,  2062 },
-        { -18106,   -2502,  2062 },
-        { -167866,  -37112, 1146 },
-        { -168188,  -37103, 1146 },
-        { -168693,  -37095, 1146 },
-        { -169015,  -37088, 1146 },
-        { 170659,   207324, 1411 },
-        { 170105,   207314, 1410 },
-        { 170630,   206760, 1411 },
-        { 170107,   206783, 1410 },
-        { 170099,   206107, 1410 },
-        { 170647,   206097, 1411 },
-        { 170623,   205561, 1411 },
-        { 170100,   205587, 1411 },
-        { 42526,    137156, 1569 },
-        { 42966,    137150, 1569 },
-        { 42524,    136717, 1569 },
-        { 42949,    136744, 1569 }
-    },
-    pickup = {}
-}
-
-local gasPrices = {
-    gasoil = "1",
-    gasoilplus = "2"
-}
-
 GasStationCached = {}
 
 AddEvent("OnPackageStart", function()
-    for i,j in pairs(gas_station.location) do
-        gas_station.pickup[i] = CreatePickup(2 , gas_station.location[i][1], gas_station.location[i][2], gas_station.location[i][3])
-        CreateText3D( _("refuel").."\n".._("press_e"), 18, gas_station.location[i][1], gas_station.location[i][2], gas_station.location[i][3] + 120, 0, 0, 0)
-        table.insert(GasStationCached, gas_station.pickup[i])
+    for i,j in pairs(Config.gasStation.location.location) do
+        Config.gasStation.location.pickup[i] = CreatePickup(2 , Config.gasStation.location.location[i][1], Config.gasStation.location.location[i][2], Config.gasStation.location.location[i][3])
+        CreateText3D( _("refuel").."\n".._("press_e"), 18, Config.gasStation.location.location[i][1], Config.gasStation.location.location[i][2], Config.gasStation.location.location[i][3] + 120, 0, 0, 0)
+        table.insert(GasStationCached, Config.gasStation.location.pickup[i])
     end
 
     CreateTimer(function()
@@ -99,12 +58,12 @@ AddRemoteEvent("StartRefuel", function(player, vehicle)
         local cash = PlayerData[player].inventory['cash'] or 0
         local fuel = VehicleData[vehicle].fuel or 100
     
-        CallRemoteEvent(player, "OpenUIGasStation", cash, 100, fuel, gasPrices.gasoil, gasPrices.gasoilplus)
+        CallRemoteEvent(player, "OpenUIGasStation", cash, 100, fuel, Config.gasStation.Fuel.gasoil.price, Config.gasStation.Fuel.gasoilplus.price)
     end
 end)
 
 AddRemoteEvent("PayGasStation", function(player, count, fuel, vehicle)
-    price = count * tonumber(gasPrices[fuel])
+    price = count * tonumber(Config.gasStation.Fuel[fuel])
 
     local resultPay = RemovePlayerCash(player, price)
     if resultPay then
