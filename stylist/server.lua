@@ -7,7 +7,6 @@ StylistNPCTable = { }
 -- 		location = { 180845, 182506, 1290, 180}
 -- 	}
 -- }
-
 -- Event ----------------------------------------------------
 
 AddEvent("OnPackageStart", function()
