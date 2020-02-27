@@ -357,7 +357,7 @@ function CleanInventoryAndTpPlayer(player)
         end
     end
 
-    SetPlayerLocation(player, PLAYER_SPAWN_POINT.x, PLAYER_SPAWN_POINT.y, PLAYER_SPAWN_POINT.z) 
+    SetPlayerLocation(player, Config.playerSpawnLocation.x, Config.playerSpawnLocation.y, Config.playerSpawnLocation.z) 
 end
 
 function UnstuckUnderWaterPlayer(player, height)
