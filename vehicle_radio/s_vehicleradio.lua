@@ -59,7 +59,7 @@ function VehicleRadioUpdateVolume(player, increaseOrLower)
         if GetPlayerVehicleSeat(player) ~= 1 and GetPlayerVehicleSeat(player) ~= 2 then return end
         if increaseOrLower == 1 then -- Increase
             nowPlaying[veh].volume = nowPlaying[veh].volume + 0.1
-            if nowPlaying[veh].volume > 1 then nowPlaying[veh].volume = 1 end
+            if nowPlaying[veh].volume > 2 then nowPlaying[veh].volume = 2 end
         elseif increaseOrLower == 2 then -- Lower
             nowPlaying[veh].volume = nowPlaying[veh].volume - 0.1
             if nowPlaying[veh].volume < 0 then nowPlaying[veh].volume = 0 end
@@ -75,17 +75,20 @@ AddRemoteEvent("vehicle:radio:updatevolume", VehicleRadioUpdateVolume)
 
 function VehicleRadioUpdateChannel(player, channelId)
     local veh = GetPlayerVehicle(player)
-    if veh ~= nil and veh ~= 0 and nowPlaying[veh] ~= nil and channelId <= 7 then
+    if veh ~= nil and veh ~= 0 and nowPlaying[veh] ~= nil and channelId <= 9 then
         if GetPlayerVehicleSeat(player) ~= 1 and GetPlayerVehicleSeat(player) ~= 2 then return end
         local x, y, z = GetVehicleLocation(veh)
         sr.DestroySound3D(nowPlaying[veh].sound)
-        local sound = sr.CreateSound3D(Config.radioList[channelId].url, x, y, z + HOOD_BONUS, RADIO_RADIUS, nowPlaying[veh].volume)        
-        nowPlaying[veh].sound = sound
-        nowPlaying[veh].channel = channelId   
-        for k=1, GetVehicleNumberOfSeats(veh) do
-            local target = GetVehiclePassenger(veh, k)
-            if IsValidPlayer(target) then CallRemoteEvent(target, "vehicle:radio:updateui", Config.radioList[nowPlaying[veh].channel].label, nowPlaying[veh].volume) end
-        end
+
+        Delay(500, function()
+            local sound = sr.CreateSound3D(Config.radioList[channelId].url, x, y, z + HOOD_BONUS, RADIO_RADIUS, nowPlaying[veh].volume)        
+            nowPlaying[veh].sound = sound
+            nowPlaying[veh].channel = channelId   
+            for k=1, GetVehicleNumberOfSeats(veh) do
+                local target = GetVehiclePassenger(veh, k)
+                if IsValidPlayer(target) then CallRemoteEvent(target, "vehicle:radio:updateui", Config.radioList[nowPlaying[veh].channel].label, nowPlaying[veh].volume) end
+            end
+        end)
     end
 end
 AddRemoteEvent("vehicle:radio:updatechannel", VehicleRadioUpdateChannel)
