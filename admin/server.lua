@@ -119,7 +119,7 @@ function OnLogListLoadd(player, playersName)
         local action = result["action"]
         logList[tostring(id)] = action
     end
-    
+
     CallRemoteEvent(player, "OpenAdminMenu", teleportPlace, playersNames, weaponList, vehicleList, logList)
 end
 
